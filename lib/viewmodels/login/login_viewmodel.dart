@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:new_project/domain/entities/auth_session.dart';
 import 'package:new_project/data/interfaces/repositories/iauth_repository.dart';
+import 'package:new_project/domain/entities/auth_session.dart';
 
 class LoginViewModel extends ChangeNotifier {
   final IauthRepository _repository;

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:new_project/viewmodels/login/login_viewmodel.dart';
 import 'package:provider/provider.dart';
 
-import 'home_page.dart';
+import 'home/home_page.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});

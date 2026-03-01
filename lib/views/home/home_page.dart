@@ -4,6 +4,11 @@ import 'package:new_project/viewmodels/login/login_viewmodel.dart';
 import 'package:new_project/viewmodels/logout/logout_viewmodel.dart';
 import 'package:new_project/views/login_page.dart';
 
+// Import các component vừa tách và trang quản lý user
+import 'home_header.dart';
+import 'home_menu_button.dart';
+import '../usermanagement/user_management_page.dart';
+
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
 
@@ -24,65 +29,31 @@ class HomePage extends StatelessWidget {
         child: SafeArea(
           child: Column(
             children: [
-              Container(
-                width: double.infinity,
-                padding: const EdgeInsets.symmetric(vertical: 24),
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    colors: [Colors.blue.shade700, Colors.blue.shade600],
-                  ),
-                  borderRadius: const BorderRadius.only(
-                    bottomLeft: Radius.circular(30),
-                    bottomRight: Radius.circular(30),
-                  ),
-                ),
-                child: const Text(
-                  'Hệ thống quản lý cá nhân',
-                  style: TextStyle(
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
-                  ),
-                  textAlign: TextAlign.center,
-                ),
-              ),
-              const SizedBox(height: 32),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 24),
-                child: Text(
-                  'Xin chào $username đến với hệ thống quản lý cá nhân',
-                  style: const TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.w600,
-                    color: Colors.blue,
-                  ),
-                  textAlign: TextAlign.center,
-                ),
-              ),
+              // Sử dụng component HomeHeader đã tách
+              HomeHeader(username: username),
               const SizedBox(height: 40),
               Expanded(
                 child: SingleChildScrollView(
                   padding: const EdgeInsets.symmetric(horizontal: 24),
                   child: Column(
                     children: [
-                      _buildMenuItem(
-                        context,
+                      HomeMenuButton(
                         icon: Icons.person_outline,
                         iconColor: Colors.blue,
                         iconBgColor: Colors.blue.shade50,
                         title: 'Quản lý người dùng',
                         onTap: () {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                              content: Text('Chức năng đang phát triển'),
-                              duration: Duration(seconds: 1),
+                          // Đã chuyển hướng sang trang UserManagementPage
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const UserManagementPage(),
                             ),
                           );
                         },
                       ),
                       const SizedBox(height: 16),
-                      _buildMenuItem(
-                        context,
+                      HomeMenuButton(
                         icon: Icons.calendar_today,
                         iconColor: Colors.orange,
                         iconBgColor: Colors.orange.shade50,
@@ -97,8 +68,7 @@ class HomePage extends StatelessWidget {
                         },
                       ),
                       const SizedBox(height: 16),
-                      _buildMenuItem(
-                        context,
+                      HomeMenuButton(
                         icon: Icons.shopping_cart_outlined,
                         iconColor: Colors.blue,
                         iconBgColor: Colors.blue.shade50,
@@ -113,8 +83,7 @@ class HomePage extends StatelessWidget {
                         },
                       ),
                       const SizedBox(height: 16),
-                      _buildMenuItem(
-                        context,
+                      HomeMenuButton(
                         icon: Icons.map_outlined,
                         iconColor: Colors.red,
                         iconBgColor: Colors.red.shade50,
@@ -129,8 +98,7 @@ class HomePage extends StatelessWidget {
                         },
                       ),
                       const SizedBox(height: 16),
-                      _buildMenuItem(
-                        context,
+                      HomeMenuButton(
                         icon: Icons.flutter_dash,
                         iconColor: Colors.blue.shade400,
                         iconBgColor: Colors.blue.shade50,
@@ -145,8 +113,7 @@ class HomePage extends StatelessWidget {
                         },
                       ),
                       const SizedBox(height: 16),
-                      _buildMenuItem(
-                        context,
+                      HomeMenuButton(
                         icon: Icons.power_settings_new,
                         iconColor: Colors.red.shade400,
                         iconBgColor: Colors.red.shade50,
@@ -167,53 +134,7 @@ class HomePage extends StatelessWidget {
     );
   }
 
-  Widget _buildMenuItem(
-    BuildContext context, {
-    required IconData icon,
-    required Color iconColor,
-    required Color iconBgColor,
-    required String title,
-    required VoidCallback onTap,
-  }) {
-    return Material(
-      color: Colors.white,
-      borderRadius: BorderRadius.circular(16),
-      elevation: 2,
-      shadowColor: Colors.black12,
-      child: InkWell(
-        onTap: onTap,
-        borderRadius: BorderRadius.circular(16),
-        child: Container(
-          padding: const EdgeInsets.all(20),
-          child: Row(
-            children: [
-              Container(
-                padding: const EdgeInsets.all(12),
-                decoration: BoxDecoration(
-                  color: iconBgColor,
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                child: Icon(icon, color: iconColor, size: 28),
-              ),
-              const SizedBox(width: 16),
-              Expanded(
-                child: Text(
-                  title,
-                  style: const TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.w600,
-                    color: Colors.blue,
-                  ),
-                ),
-              ),
-              Icon(Icons.chevron_right, color: Colors.grey.shade400),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
+  // Giữ nguyên logic hàm showDialog của bạn
   void _showLogoutDialog(BuildContext context, String username) {
     showDialog(
       context: context,
@@ -249,17 +170,12 @@ class HomePage extends StatelessWidget {
               onPressed: () async {
                 Navigator.of(dialogContext).pop();
 
-                // Sử dụng LogoutViewModel riêng
                 final logoutVm = context.read<LogoutViewModel>();
                 final loginVm = context.read<LoginViewModel>();
 
-                // Gọi logout
                 await logoutVm.logout();
-
-                // Xóa session trong LoginViewModel
                 loginVm.clearSession();
 
-                // Quay về login
                 if (!context.mounted) return;
                 Navigator.of(context).pushAndRemoveUntil(
                   MaterialPageRoute(builder: (_) => const LoginPage()),

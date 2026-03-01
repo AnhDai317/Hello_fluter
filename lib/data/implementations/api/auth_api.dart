@@ -1,9 +1,9 @@
 import 'package:new_project/data/dtos/login/login_request_dtos.dart';
 import 'package:new_project/data/dtos/login/login_response_dto.dart';
 import 'package:new_project/data/dtos/login/user_dto.dart';
+import 'package:new_project/data/interfaces/api/iauth_api.dart';
 import 'package:new_project/data/implementations/local/app_database.dart';
 import 'package:new_project/data/implementations/local/password_hasher.dart';
-import 'package:new_project/data/interfaces/api/iauth_api.dart';
 import 'package:sqflite/sqflite.dart';
 
 class AuthApi implements IauthApi {

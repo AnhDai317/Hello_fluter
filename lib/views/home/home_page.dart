@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:new_project/views/api_images/api_images_page.dart';
 import 'package:provider/provider.dart';
 import 'package:new_project/viewmodels/login/login_viewmodel.dart';
 import 'package:new_project/viewmodels/logout/logout_viewmodel.dart';
 import 'package:new_project/views/login_page.dart';
-
-// Import các component vừa tách và trang quản lý user
 import 'home_header.dart';
 import 'home_menu_button.dart';
 import '../usermanagement/user_management_page.dart';
@@ -29,7 +28,6 @@ class HomePage extends StatelessWidget {
         child: SafeArea(
           child: Column(
             children: [
-              // Sử dụng component HomeHeader đã tách
               HomeHeader(username: username),
               const SizedBox(height: 40),
               Expanded(
@@ -37,13 +35,29 @@ class HomePage extends StatelessWidget {
                   padding: const EdgeInsets.symmetric(horizontal: 24),
                   child: Column(
                     children: [
+                      // NÚT XEM ẢNH API MỚI THÊM VÀO
+                      HomeMenuButton(
+                        icon: Icons.image_search,
+                        iconColor: Colors.purple,
+                        iconBgColor: Colors.purple.shade50,
+                        title: 'Xem Ảnh qua Api',
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const ApiImagesPage(),
+                            ),
+                          );
+                        },
+                      ),
+                      const SizedBox(height: 16),
+
                       HomeMenuButton(
                         icon: Icons.person_outline,
                         iconColor: Colors.blue,
                         iconBgColor: Colors.blue.shade50,
                         title: 'Quản lý người dùng',
                         onTap: () {
-                          // Đã chuyển hướng sang trang UserManagementPage
                           Navigator.push(
                             context,
                             MaterialPageRoute(
@@ -59,27 +73,17 @@ class HomePage extends StatelessWidget {
                         iconBgColor: Colors.orange.shade50,
                         title: 'Quản lý nhắc việc',
                         onTap: () {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                              content: Text('Chức năng đang phát triển'),
-                              duration: Duration(seconds: 1),
-                            ),
-                          );
+                          _showDevelopingSnackBar(context);
                         },
                       ),
                       const SizedBox(height: 16),
                       HomeMenuButton(
                         icon: Icons.shopping_cart_outlined,
-                        iconColor: Colors.blue,
-                        iconBgColor: Colors.blue.shade50,
+                        iconColor: Colors.green,
+                        iconBgColor: Colors.green.shade50,
                         title: 'Đặt hàng',
                         onTap: () {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                              content: Text('Chức năng đang phát triển'),
-                              duration: Duration(seconds: 1),
-                            ),
-                          );
+                          _showDevelopingSnackBar(context);
                         },
                       ),
                       const SizedBox(height: 16),
@@ -89,27 +93,7 @@ class HomePage extends StatelessWidget {
                         iconBgColor: Colors.red.shade50,
                         title: 'Xem Bản Đồ',
                         onTap: () {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                              content: Text('Chức năng đang phát triển'),
-                              duration: Duration(seconds: 1),
-                            ),
-                          );
-                        },
-                      ),
-                      const SizedBox(height: 16),
-                      HomeMenuButton(
-                        icon: Icons.flutter_dash,
-                        iconColor: Colors.blue.shade400,
-                        iconBgColor: Colors.blue.shade50,
-                        title: 'Tổng quan Flutter',
-                        onTap: () {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                              content: Text('Chức năng đang phát triển'),
-                              duration: Duration(seconds: 1),
-                            ),
-                          );
+                          _showDevelopingSnackBar(context);
                         },
                       ),
                       const SizedBox(height: 16),
@@ -130,6 +114,16 @@ class HomePage extends StatelessWidget {
             ],
           ),
         ),
+      ),
+    );
+  }
+
+  // Hàm helper để hiện SnackBar cho gọn code
+  void _showDevelopingSnackBar(BuildContext context) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        content: Text('Chức năng đang phát triển'),
+        duration: Duration(seconds: 1),
       ),
     );
   }
